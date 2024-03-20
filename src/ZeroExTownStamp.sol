@@ -17,7 +17,7 @@ contract ZeroExTownStamp is ERC721, Ownable, Initializable {
 
     mapping(uint => address) public visitors;
     mapping(uint => uint) public timestamps;
-    mapping(address => bool) public visited;
+    mapping(address => uint) public numbers;
 
     function name() public pure override returns (string memory) {
         return "0xTOWNSTAMP";
@@ -41,13 +41,13 @@ contract ZeroExTownStamp is ERC721, Ownable, Initializable {
     }
 
     function mint() external {
-        if (!mintAllowed || visited[msg.sender]) {
+        if (!mintAllowed || numbers[msg.sender] != 0) {
             revert MintNotAllowed();
         }
         uint tokenId = ++totalSupply;
         visitors[tokenId] = msg.sender;
         timestamps[tokenId] = block.timestamp;
-        visited[msg.sender] = true;
+        numbers[msg.sender] = tokenId;
         _mint(msg.sender, tokenId);
     }
 

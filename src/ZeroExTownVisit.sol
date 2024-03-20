@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
+import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {OwnableRoles} from "solady/auth/OwnableRoles.sol";
 import {ERC721} from "solady/tokens/ERC721.sol";
 import {Initializable} from "solady/utils/Initializable.sol";
 
-contract ZeroExTownVisit is ERC721, OwnableRoles, Initializable {
+contract ZeroExTownVisit is ERC721, OwnableRoles, Pausable, Initializable {
     uint public count;
     mapping(uint => uint) public timestamps;
 

@@ -35,9 +35,8 @@ contract ZeroExTownStamp is ERC721, Ownable, Initializable {
     /// @return string representing the token URI.
     function tokenURI(uint id) public view override returns (string memory) {
         string memory visitor = LibString.concat("?visitor=", LibString.toHexString(visitors[id]));
-        string memory owner = LibString.concat("&owner=", LibString.toHexString(ownerOf(id)));
         string memory ts = LibString.concat("&ts=", LibString.toString(timestamps[id]));
-        return string(abi.encodePacked(baseURI, LibString.toString(id), visitor, owner, ts));
+        return string(abi.encodePacked(baseURI, LibString.toString(id), visitor, ts));
     }
 
     /// @notice Initializes the contract with a base URI and owner.

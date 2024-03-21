@@ -9,7 +9,7 @@ import {ZeroExTownStamp} from "../src/ZeroExTownStamp.sol";
 contract Deploy is Script {
     function setUp() public {}
 
-    function run() public {
+    function run() public returns (address) {
         vm.startBroadcast();
         ZeroExTownStamp impl = new ZeroExTownStamp();
         impl.initialize("", address(0));
@@ -20,5 +20,6 @@ contract Deploy is Script {
                 ZeroExTownStamp.initialize.selector, "https://stamp.0x.town/", msg.sender
             )
         );
+        return address(proxy);
     }
 }

@@ -31,4 +31,4 @@ Before you begin, make sure you have:
 - [Solidity](https://soliditylang.org/) - The contract language of choice.
 - [Foundry](https://getfoundry.sh/) - The smart contract development framework of choice.
 - [ERC-721](https://eips.ethereum.org/EIPS/eip-721) - For the NFT standards.
-- [Solady](https://github.com/Vectorized/solady) & [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master)- For security and efficiency.
+- [Solady](https://github.com/Vectorized/solady) & [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master) - For security and efficiency.

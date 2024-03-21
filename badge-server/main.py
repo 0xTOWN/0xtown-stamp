@@ -23,7 +23,7 @@ async def root(number: int, visitor: str, ts: int):
                 "value": visitor,
         }, {
             "trait_type": "Timestamp",
-            "value": ts,
+            "value": str(ts),
         }]
     }
 

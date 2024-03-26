@@ -15,7 +15,7 @@ HOSTNAME = os.getenv('HOSTNAME', 'https://stamp.0x.town')
 @app.get('/{number}')
 async def root(number: int, visitor: str, ts: int):
     return {
-        'name': '0xTOWN STAMP',
+        'name': f'0xTOWN Stamp #{number}',
         'description': 'Your gateway to becoming a part of the ever-vibrant 0xTOWN!',
         'image': f'{HOSTNAME}/image/{number}?visitor={visitor}&ts={ts}',
         'attributes': [{

@@ -9,7 +9,7 @@ import {ZeroExTownStamp} from "../src/ZeroExTownStamp.sol";
 contract TestZeroExTownStamp is Test {
     function testMint() external {
         ZeroExTownStamp town = new ZeroExTownStamp();
-        town.initialize("https://stamp.0x.town/", address(this));
+        town.initialize("https://stamp.0x.town/", address(this), 0);
         town.setMintAllowed(true);
         address u1 = vm.addr(1024);
         vm.prank(u1);

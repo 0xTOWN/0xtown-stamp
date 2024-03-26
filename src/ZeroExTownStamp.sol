@@ -5,6 +5,7 @@ import {Ownable} from "solady/auth/Ownable.sol";
 import {ERC721} from "solady/tokens/ERC721.sol";
 import {Initializable} from "solady/utils/Initializable.sol";
 import {LibString} from "solady/utils/LibString.sol";
+import {SafeTransferLib} from "solady/utils/SafeTransferLib.sol";
 
 /// @title 0xTOWNSTAMP Soulbound NFT Token
 contract ZeroExTownStamp is ERC721, Ownable, Initializable {
@@ -14,6 +15,7 @@ contract ZeroExTownStamp is ERC721, Ownable, Initializable {
     bool public mintAllowed; // Controls the minting functionality.
     bool public transferAllowed; // Controls the transferability of the NFT tokens.
     uint public totalSupply; // Tracks the total number of tokens minted.
+    uint public mintPrice; // Tracks the mint price.
     string public baseURI; // Base URI for computing {tokenURI}.
 
     mapping(uint => address) public visitors; // Maps token IDs to visitor addresses.
@@ -43,14 +45,18 @@ contract ZeroExTownStamp is ERC721, Ownable, Initializable {
     /// @dev Sets the base URI and initializes ownership to the provided owner address.
     /// @param _baseURI The base URI to be set for computing {tokenURI}.
     /// @param owner The address to be set as the owner of the contract.
-    function initialize(string calldata _baseURI, address owner) external initializer {
+    function initialize(string calldata _baseURI, address owner, uint _mintPrice)
+        external
+        initializer
+    {
         baseURI = _baseURI;
+        mintPrice = _mintPrice;
         _initializeOwner(owner);
     }
 
     /// @notice Mints a new token to the sender address.
-    function mint() external {
-        if (!mintAllowed || numbers[msg.sender] != 0) {
+    function mint() external payable {
+        if (!mintAllowed || numbers[msg.sender] != 0 || msg.value != mintPrice) {
             revert MintNotAllowed();
         }
         uint tokenId = ++totalSupply;
@@ -67,6 +73,13 @@ contract ZeroExTownStamp is ERC721, Ownable, Initializable {
         mintAllowed = allowed;
     }
 
+    /// @notice Sets the minting price.
+    /// @dev Can only be called by the contract owner.
+    /// @param price Integer representing the new mint price.
+    function setMintPrice(uint price) external onlyOwner {
+        mintPrice = price;
+    }
+
     /// @notice Sets the transfer permission.
     /// @dev Can only be called by the contract owner.
     /// @param allowed Boolean representing the permission status.
@@ -79,6 +92,11 @@ contract ZeroExTownStamp is ERC721, Ownable, Initializable {
     /// @param _baseURI The base URI to be set.
     function setBaseURI(string calldata _baseURI) external onlyOwner {
         baseURI = _baseURI;
+    }
+
+    /// @notice Withdraws the collected mint fees.
+    function withdraw() external onlyOwner {
+        SafeTransferLib.safeTransferAllETH(msg.sender);
     }
 
     /// @dev Overrides the ERC721 _beforeTokenTransfer to enforce the transferAllowed policy.

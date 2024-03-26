@@ -13,12 +13,12 @@ contract Deploy is Script {
         address owner = msg.sender;
         vm.startBroadcast();
         ZeroExTownStamp impl = new ZeroExTownStamp();
-        impl.initialize("", address(0));
+        impl.initialize("", address(0), 0);
         TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
             address(impl),
             owner,
             abi.encodeWithSelector(
-                ZeroExTownStamp.initialize.selector, "https://stamp.0x.town/", owner
+                ZeroExTownStamp.initialize.selector, "https://stamp.0x.town/", owner, 0.05 ether
             )
         );
         return address(proxy);

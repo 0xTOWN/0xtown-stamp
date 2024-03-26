@@ -10,14 +10,15 @@ contract Deploy is Script {
     function setUp() public {}
 
     function run() public returns (address) {
+        address owner = msg.sender;
         vm.startBroadcast();
         ZeroExTownStamp impl = new ZeroExTownStamp();
         impl.initialize("", address(0));
         TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
             address(impl),
-            msg.sender,
+            owner,
             abi.encodeWithSelector(
-                ZeroExTownStamp.initialize.selector, "https://stamp.0x.town/", msg.sender
+                ZeroExTownStamp.initialize.selector, "https://stamp.0x.town/", owner
             )
         );
         return address(proxy);
